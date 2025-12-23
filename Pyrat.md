@@ -205,7 +205,7 @@ To facilitate further enumeration and escape this restricted environment, the ne
 Since standard Linux commands like `ls` were failing, there's a good chance `netcat` or `bash` might be missing or restricted on the target. However, **Python** works perfectly.
 
 Before crafting the Python payload to send to the server, I need to set up the "receiver" on my end. 
-Find out which IP address the server should connect back to - TryHackMe VPN IP which is assigned with [[Tunnel]]:
+Find out which IP address the server should connect back to - TryHackMe VPN IP which is assigned with Tunnel:
 
 `ifconfig | awk '/^[a-z]/ {intf=$1} /inet / && !/127.0.0.1/ {print intf, $2}'`
 ```bash mac
@@ -274,7 +274,7 @@ drwxrwxr-x 8 think think 4096 Jun 21  2023 .git
 
 Inside `/opt/dev` we find a `.git` folder, owned by user named `think`
 
-Check the git log using [[Git Flag]]s gives us a curious commit ID
+Check the git log using Git Flags gives us a curious commit ID
 `git --git-dir=/opt/dev/.git --work-tree=/opt/dev log`
 ```bash
 commit 0a3c36d66369fd4b07ddca72e5379461a63470bf (HEAD -> master)
