@@ -47,7 +47,8 @@ ls -la
 cat read-me-please.txt
 #also, "sudo su" here allows to jump between home folders easier
 ```
-![[Screenshot 2025-12-08 at 22.19.56.png|600]]
+
+<img src="./resources/Screenshot 2025-12-08 at 22.19.56.png" alt="" width="400">
 
 Encrypted message is located at `/home/eddi_knapp/Documents/`.
 Also we got the credentials to another account:
@@ -55,8 +56,9 @@ Also we got the credentials to another account:
 
 To open the vault, we need to combine a key from 3 fragments.
 
-Moving to eddi_knapp's folder, we see a few files and folders. Some of them are curious, like `fix_passfrag_backups_20251111162432`, `.pam_environment`, `secret`,`secret_git
-![[Screenshot 2025-12-08 at 22.23.37.png|600]]
+Moving to eddi_knapp's folder, we see a few files and folders. Some of them are curious, like `fix_passfrag_backups_20251111162432`, `.pam_environment`, `secret`,`secret_git`
+
+<img src="./resources/Screenshot 2025-12-08 at 22.23.37.png" alt="" width="400">
 
 **First clue:**
 *I ride with your session, not with your chest of files.*
@@ -75,10 +77,12 @@ Read the ledger’s older pages.*
 The phrase "Tree shows today" hinted at a standard file structure, but "Rings remember yesterday" suggested looking below the surface. I recognized this as a reference to **Git**, where the "ledger's older pages" represent the commit log. The goal was to look back in time at changes that had been effectively "erased" from the current working tree.
 
 Upon entering the hidden `.secret_git` directory, git refused to run due to ownership permissions (running as root in a user folder). I resolved this by switching to the user context (`su eddi_knapp` with the password found earlier) to inspect the logs properly:
-![[Screenshot 2025-12-08 at 22.50.39.png|600]]
+
+<img src="./resources/Screenshot 2025-12-08 at 22.50.39.png" alt="" width="400">
 
 Some private note, let's check it! 
-![[Screenshot 2025-12-08 at 22.51.30.png|600]]
+
+<img src="./resources/Screenshot 2025-12-08 at 22.51.30.png" alt="" width="400">
 
 Fragment 2 found!
 
@@ -89,13 +93,15 @@ Listen to the tail.*
 "Pixels" clearly pointed to the `Pictures` directory. The phrase "tails sometimes whisper plain words" was a specific hint about **file appending steganography**—where text is hidden at the very end of a file. I realized I needed to read the "tail" of the image binaries to find the plaintext message.
 
 After scanning `Pictures` folder, file `.easter_egg` got my attention:
-![[Screenshot 2025-12-08 at 22.53.45.png|600]]
+
+<img src="./resources/Screenshot 2025-12-08 at 22.53.45.png" alt="" width="400">
 Third part done!
 Complete passphrase is `3ast3r-1s-c0M1nG`,  let's use it!
 
 As per the instruction,  going to `/home/eddi_knapp/Documents` to find a gpg vault `mcskidy_note.txt.gpg`.
 Decrypting it with the key we got another note:
-![[Screenshot 2025-12-08 at 22.59.11.png|600]]
+
+<img src="./resources/Screenshot 2025-12-08 at 22.59.11.png" alt="" width="400">
 
 To decode the message, I needed to pass a block of Base64 text to OpenSSL. Instead of pasting it directly (which can cause formatting errors), I used a **Heredoc** (`<< EOF`) to cleanly write the multi-line string into a temporary file before processing.
 ```bash
@@ -115,7 +121,8 @@ EOF
 
 Proceeding to the website mentioned earlier in the task:
 `10.80.145.63`
-![[Screenshot 2025-12-08 at 23.06.45.png|600]]
+
+<img src="./resources/Screenshot 2025-12-08 at 23.06.45.png" alt="" width="400">
 
 Let's follow McSkidy's instructions, and put this code to a file
 ```bash
@@ -132,7 +139,8 @@ cat /tmp/decoded_message.txt
 ```
 
 Finding next instruction:
-![[Screenshot 2025-12-08 at 23.11.37.png|600]]
+
+<img src="./resources/Screenshot 2025-12-08 at 23.11.37.png" alt="" width="400">
 
 Using the key `THM{w3lcome_2_A0c_2025}` to decrypt `/home/eddi_knapp/.secret/dir`
 
@@ -163,7 +171,4 @@ python3 -m http.server 8888
 ```
 *Alternatively, I could have run `base64 sq1.png` and pasted the raw text directly into a browser address bar (`data:image/png;base64,...`) to view it without downloading files.*
 
-Open the url http://10.80.145.63:8888/sq1.png in browser and here it is:
-![[Pasted image 20251208233618.png|300]]
-Key: `now_you_see_me`
-SQ2 key: THM{HEADER_FLAG}
+Open the url http://[IP]:8888/sq1.png in browser and there it is.
